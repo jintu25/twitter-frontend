@@ -103,7 +103,7 @@ function Layout() {
                 <li>
                   <NavLink
                     to="/dashboard/allusers"
-                    className="text-lg font-semibold text-slate-200 flex justify-center bg-blue-500 hover:bg-blue-400 duration-300 mt-4"
+                    className="text-lg font-semibold text-slate-200 flex justify-center bg-blue-500 hover:bg-blue-400 duration-300 mt-4 px-3 py-1"
                   >
                     Post
                   </NavLink>
