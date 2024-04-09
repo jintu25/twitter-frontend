@@ -4,15 +4,22 @@ import axios from "axios"
 import { USER_API_END } from "../../utils/constant";
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginFailure, loginSuccess } from "../../redux/action";
+import { getUser } from "../../redux/userSlice";
 const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    // import { loginSuccess, loginFailure } from './actions';
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        // Inside handleSubmit function
+
         try {
             const response = await axios.post(`${USER_API_END}/login`, { email, password }, {
                 headers: {
@@ -20,26 +27,23 @@ const Login = () => {
                 },
                 withCredentials: true
             });
-            console.log(response)
+
             if (response.data.success) {
+                dispatch(getUser(response?.data?.user));
                 toast.success("Login successfully...")
                 navigate("/")
-            }
-            else {
-                // Login failed, handle error scenario
-                setError('Invalid email or password'); // Set a generic error message
+            } else {
+                dispatch(loginFailure('Invalid email or password'));
             }
         } catch (error) {
-            // Handle network errors
             if (error.response && error.response.data && error.response.data.message) {
-                // If the server responded with a specific error message, use it
-                setError(error.response.data.message);
+                dispatch(loginFailure(error.response.data.message));
             } else {
-                // Otherwise, use a generic error message
-                setError('Failed to submit form');
+                dispatch(loginFailure('Failed to submit form'));
             }
             console.error('Failed to submit form:', error);
         }
+
     };
     return (
         <div>

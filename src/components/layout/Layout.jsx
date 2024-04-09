@@ -6,8 +6,11 @@ import { FaBookmark } from "react-icons/fa";
 import { IoMdNotifications } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
 import logo from '../../assets/white logo.png'
+import { useSelector } from "react-redux"
 
 function Layout() {
+
+  const { user } = useSelector(store => store.user)
 
   return (
     <div>
@@ -67,7 +70,7 @@ function Layout() {
                 </li>
                 <li>
                   <NavLink
-                    to="/profile"
+                    to={`/profile/${user?._id}`}
                     className="text-lg font-semibold text-slate-200 flex"
                   >
                     <span>

@@ -5,18 +5,18 @@ import Profile from "../profile/Profile";
 import Login from "../login/Login";
 import Signup from "../signup/Signup";
 
-export const router = createBrowserRouter([
+const router = createBrowserRouter([
     {
         path: "/",
-        element: <Layout/>,
+        element: <Layout />,
         children: [
             {
                 path: "/",
-                element: <Home/>
+                element: <Home />
             },
             {
-                path: "/profile",
-                element: <Profile/>
+                path: "/profile/:id",
+                element: <Profile />
             },
             {
                 path: "/login",
@@ -30,3 +30,4 @@ export const router = createBrowserRouter([
     }
 ])
 
+export default router
