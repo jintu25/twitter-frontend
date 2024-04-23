@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   "rules": {
-    
+    "react/prop-types": "off",
     "no-unused-vars": "warn"
   },
   env: { browser: true, es2020: true, node: true, },
