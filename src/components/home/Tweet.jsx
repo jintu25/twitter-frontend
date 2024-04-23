@@ -2,7 +2,7 @@ import { FaRegComment } from "react-icons/fa";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { CiBookmark } from "react-icons/ci";
 import axios from "axios";
-import { TWEET_API_END } from "../../utils/constant";
+import { TWEET_API_END, timeSince } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { getRefresh } from "../../redux/tweetSlice";
 import toast from "react-hot-toast";
@@ -11,7 +11,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import Swal from 'sweetalert2'
 
 function Tweet({ tweet }) {
-    const { description, like } = tweet;
+    const { description, like, createdAt } = tweet;
     const { user } = useSelector(store => store.user);
     const dispatch = useDispatch();
 
@@ -78,7 +78,7 @@ function Tweet({ tweet }) {
                     <div className="flex items-center mb-2">
                         <h4 className="mr-2 font-semibold text-lg">{tweet?.userDetails[0]?.name}</h4>
                         <p className="text-slate-500 mr-2">{tweet?.userDetails[0]?.username}</p>
-                        <span className="text-slate-400">4h</span>
+                        <span className="text-slate-400">{timeSince(createdAt)}</span>
                     </div>
                     <p className="mb-2">{description}</p>
                     {/* <img className="w-full h-80 my-4" src="https://media.istockphoto.com/id/477110708/photo/weather-forecast.webp?b=1&s=170667a&w=0&k=20&c=cJDnRfarWTRVrTRGBv82aQUYmkgZp3FTCSLKLXdrcCU=" alt="image" /> */}

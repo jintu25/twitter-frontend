@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 
 function Feed() {
   const { tweets } = useSelector(store => store.tweet)
-  console.log(" tweets is: ", tweets)
+
   return (
     <div>
       <CreatePost/>
