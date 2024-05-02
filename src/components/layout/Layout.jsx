@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom"
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom"
 import { IoHome } from "react-icons/io5";
 import { FaSearch } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
@@ -109,17 +109,24 @@ function Layout() {
                     Bookmarks
                   </NavLink>
                 </li>
-                <li onClick={logoutHandler}>
-                  <NavLink
-                    to="/dashboard/allusers"
-                    className="text-lg font-semibold text-slate-200 flex"
-                  >
-                    <span>
-                      <IoMdLogOut />
-                    </span>{" "}
-                    Logout
-                  </NavLink>
-                </li>
+                {
+                  user ? <li onClick={logoutHandler}>
+                    <NavLink
+                      to="/dashboard/allusers"
+                      className="text-lg font-semibold text-slate-200 flex"
+                    >
+                      <span>
+                        <IoMdLogOut />
+                      </span>{" "}
+                      Logout
+                    </NavLink>
+                  </li> :
+                    <li className="text-lg font-semibold text-slate-200 flex">
+                      <Link to='/login'>
+                        Login
+                      </Link>
+                    </li>
+                }
                 <li>
                   <NavLink
                     to="/dashboard/allusers"

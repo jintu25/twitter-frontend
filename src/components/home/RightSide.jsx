@@ -10,10 +10,10 @@ function RightSide() {
   return (
     <div className="bg-slate-200 p-3 w-full">
       <div className="">
-        <input className="w-full rounded-lg" type="text" name="search" placeholder="Search" id="" />
+        <input className="w-full rounded-lg px-2 py-3" type="text" name="search" placeholder="Search" id="" />
       </div>
       <div className=" mt-6">
-        <h3>who to follow</h3>
+        <h3 className="text-2xl font-semibold font-serif text-slate-700">who to follow</h3>
         {
           otherUsers?.map((user) => {
             return (
