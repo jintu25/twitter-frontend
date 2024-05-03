@@ -3,7 +3,7 @@ import logo from "../../assets/logo.png"
 import axios from "axios"
 import { USER_API_END } from "../../utils/constant";
 import toast from "react-hot-toast"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginFailure, loginSuccess } from "../../redux/action";
 import { getUser } from "../../redux/userSlice";
@@ -115,16 +115,9 @@ const Login = () => {
                                         </button>
                                         {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
                                     </form>
-
-                                    <p className="mt-6 text-xs text-gray-600 text-center">
-                                        I agree to abide by Cartesian Kinetics
-                                        <a href="#" className="border-b border-gray-500 border-dotted">
-                                            Terms of Service
-                                        </a>
-                                        and its
-                                        <a href="#" className="border-b border-gray-500 border-dotted">
-                                            Privacy Policy
-                                        </a>
+                                    <p className="mt-2">
+                                        Create an new account please
+                                        <Link to="/signup" className="text-blue-500 underline"> sign Up</Link>
                                     </p>
                                 </div>
                             </div>
