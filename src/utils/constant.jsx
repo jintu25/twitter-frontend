@@ -1,5 +1,5 @@
-export const USER_API_END = "https://twitter-backend-kes7.vercel.app/api/v1/user"
-export const TWEET_API_END = "https://twitter-backend-kes7.vercel.app/api/v1/tweet"
+export const USER_API_END = "https://twitter-backend-jade-nine.vercel.app/api/v1/user"
+export const TWEET_API_END = "https://twitter-backend-jade-nine.vercel.app/api/v1/tweet"
 
 export const timeSince = (timestamp) => {
     let time = Date.parse(timestamp);

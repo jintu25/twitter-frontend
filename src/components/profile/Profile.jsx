@@ -6,15 +6,20 @@ import { USER_API_END } from '../../utils/constant'
 import toast from "react-hot-toast"
 import { followUpdate } from '../../redux/userSlice'
 import { useState } from 'react'
+import EditProfile from './EditProfile'
 
 function Profile() {
   const { user, profile } = useSelector(store => store.user)
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const { id } = useParams()
   useProfile(id)
   console.log(profile)
-  // console.log("user is: ", user)
+
+  const handleCloseModal = () => {
+    setIsEditing(false);
+  };
 
   const followHandle = async () => {
     // user is already following, so unfollow
@@ -25,20 +30,19 @@ function Profile() {
           withCredentials: true
         });
         console.log(res);
-        dispatch(followUpdate(id)); // <-- Pass user ID here to unfollow
+        dispatch(followUpdate(id));
         toast.success(res.data.message);
       } catch (error) {
         console.log(error);
       }
     } else {
-      // user wants to follow
       setIsLoading(true);
       try {
         const res = await axios.post(`${USER_API_END}/follow/${id}`, { id: user?._id }, {
           withCredentials: true
         });
         console.log(res);
-        dispatch(followUpdate(id)); // <-- Pass user ID here to follow
+        dispatch(followUpdate(id));
         toast.success(res.data.message);
       } catch (error) {
         console.log(error);
@@ -46,6 +50,26 @@ function Profile() {
     }
   }
 
+  const handleEditProfile = () => {
+    setIsEditing(true);
+  };
+
+  // const handleUpdateProfile = async (updatedProfile) => {
+  //   try {
+  //     setIsLoading(true);
+  //     const res = await axios.put(`${USER_API_END}/edit/${profile, _id}`, updatedProfile, {
+  //       withCredentials: true
+  //     });
+  //     console.log(res);
+  //     toast.success(res.data.message);
+  //     setIsEditing(false); // Close the edit modal
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error('Failed to update profile');
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col">
@@ -79,17 +103,26 @@ function Profile() {
           <p className="text-gray-600 text-lg mt-1 font-sans">@{profile?.username}</p>
         </div>
         {/* Top Right: Username and Edit Button */}
-        <div className="flex items-start justify-end space-x-4">
-          {
-            profile?._id === user?._id ? <button className="px-4 py-2 rounded-full bg-black hover:bg-slate-500 duration-300 text-white font-bold">
-              Edit Profile
-            </button> :
+        <div>
+          {/* Edit Profile Button */}
+          <div className="flex items-start justify-end space-x-4">
+            {profile?._id === user?._id ? (
+              <button onClick={handleEditProfile} className="px-4 py-2 rounded-full bg-black hover:bg-slate-500 duration-300 text-white font-bold">
+                Edit Profile
+              </button>
+            ) : (
               <button onClick={followHandle} className="px-4 py-2 rounded-full bg-white border-slate-200 text-black font-bold">
                 {user?.following?.includes(id) ? "Following" : "Follow"}
               </button>
-          }
-        </div>
+            )}
+          </div>
 
+          {/* Edit Profile Modal */}
+          {isEditing && (
+            <EditProfile profile={profile}
+              onClose={handleCloseModal} onCancel={() => setIsEditing(false)} />
+          )}
+        </div>
 
         {/* Information Section (optional) */}
         <div className="">
@@ -97,10 +130,12 @@ function Profile() {
 
           <div className='flex gap-5'>
             <p>
-              <span className="font-bold">Following</span> {user?.followingCount}
+              <span className='text-xl font-bold mr-2 text-[#262088]'>{profile?.following.length}</span>
+              <span className="font-bold">Following</span> 
             </p>
-            <p>
-              <span className="font-bold">Followers</span> {user?.followerCount}
+            <p >
+              <span className='text-xl font-bold mr-2 text-[#262088]'>{profile?.followers.length}</span>
+              <span className="font-bold">Followers</span> 
             </p>
           </div>
         </div>
@@ -114,4 +149,4 @@ function Profile() {
   )
 }
 
-export default Profile
+export default Profile;

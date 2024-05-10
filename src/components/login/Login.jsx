@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginFailure, loginSuccess } from "../../redux/action";
 import { getUser } from "../../redux/userSlice";
+
 const Login = () => {
 
     const [email, setEmail] = useState('');
@@ -30,13 +31,16 @@ const Login = () => {
 
             if (response.data.success) {
                 dispatch(getUser(response?.data?.user));
-                toast.success("Login successfully...")
+                console.log(response)
+                toast.success(`${response?.data?.user?.name} login successfully`)
                 navigate("/")
             } else {
                 dispatch(loginFailure('Invalid email or password'));
             }
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message) {
+                // toast.error(error)
+                toast.error(error.response.data.message)
                 dispatch(loginFailure(error.response.data.message));
             } else {
                 dispatch(loginFailure('Failed to submit form'));

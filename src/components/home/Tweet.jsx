@@ -1,21 +1,25 @@
 import { FaRegComment } from "react-icons/fa";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-import { CiBookmark } from "react-icons/ci";
+import { FaBookmark } from "react-icons/fa";
+
 import axios from "axios";
-import { TWEET_API_END, timeSince } from "../../utils/constant";
+import { TWEET_API_END, USER_API_END, timeSince } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { getRefresh } from "../../redux/tweetSlice";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { FaRegTrashCan } from "react-icons/fa6";
 import Swal from 'sweetalert2'
+import { getRefreshUser } from "../../redux/userSlice";
 
 function Tweet({ tweet }) {
     const { description, like, createdAt } = tweet;
     const { user } = useSelector(store => store.user);
     const dispatch = useDispatch();
+    console.log(tweet)
 
     const [isLiked, setIsLiked] = useState(like?.includes(user?._id)); // Initial like state based on user ID in like array
+    const [isBookmarks, setIsBookmarks] = useState(like?.includes(user?._id)); // Initial like state based on user ID in like array
 
     const handleLikeOrDislike = async (id) => {
         try {
@@ -33,6 +37,22 @@ function Tweet({ tweet }) {
             toast.error("An error occurred. Please try again later.");
         }
     };
+    // bookmarks tweet
+    const handleBookmarks = async (id) => {
+        try {
+            const response = await axios.put(`${USER_API_END}/bookmark/${id}`,
+                { id: user?._id },
+                { withCredentials: true }
+            )
+            console.log(response)
+            setIsBookmarks(!isBookmarks); // Update local state immediately for UI feedback
+            dispatch(getRefreshUser()); // Trigger tweet refresh action
+            toast.success(response.data.message);
+        } catch (error) {
+            console.log(error)
+            toast.error(error)
+        }
+    }
 
     // delete tweet function
 
@@ -93,10 +113,11 @@ function Tweet({ tweet }) {
                             </span>
                             <span className="text-lg">{like?.length}</span>
                         </button>
-                        <li className="flex gap-2 items-center">
-                            <span className="text-2xl font-semibold"><CiBookmark /> </span>
-                            <span className="text-lg">0</span>
-                        </li>
+                        <button onClick={() => handleBookmarks(tweet._id)} className="flex gap-2 items-center">
+                            <span className="text-2xl font-semibold">
+                                {isBookmarks ? <FaBookmark className="text-blue-900" /> : <FaBookmark className="text-slate-200" />}
+                            </span>
+                        </button>
 
                         <button onClick={() => handleDeleteTweet(tweet._id)} className="flex gap-2 items-center">
                             {
